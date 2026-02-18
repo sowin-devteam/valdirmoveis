@@ -294,12 +294,15 @@ export default function Home() {
     }, 50)
   }
 
+  const normalize = (str) =>
+    str?.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') || ''
+
   const filteredProducts = products.filter(product => {
     if (!searchTerm.trim()) return true
-    const term = searchTerm.toLowerCase()
-    const nameMatch = product.name?.toLowerCase().includes(term)
-    const descMatch = product.description?.toLowerCase().includes(term)
-    const categoryMatch = product.category?.toLowerCase().includes(term)
+    const term = normalize(searchTerm)
+    const nameMatch = normalize(product.name).includes(term)
+    const descMatch = normalize(product.description).includes(term)
+    const categoryMatch = normalize(product.category).includes(term)
     return nameMatch || descMatch || categoryMatch
   })
 
